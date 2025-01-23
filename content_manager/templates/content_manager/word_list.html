@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Words and Phrases</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
+
+        form {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            border: 2px solid #007bff;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: #0056b3;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        li {
+            background-color: white;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        li:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .word-text {
+            font-size: 18px;
+            color: #2c3e50;
+        }
+
+        .word-text strong {
+            color: #007bff;
+        }
+
+        .example-text {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .edit-link {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+            margin-left: auto;
+            padding-left: 10px;
+        }
+
+        .edit-link:hover {
+            color: #0056b3;
+        }
+
+        .pagination {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .pagination a {
+            margin: 0 5px;
+            text-decoration: none;
+            color: #007bff;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .pagination a:hover {
+            color: #0056b3;
+        }
+
+        .pagination .current {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <h1>Words and Phrases</h1>
+    <div style="text-align: center; margin-bottom: 20px;">
+        <a href="{% url 'add_word' %}" style="text-decoration: none;">
+            <button style="padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; transition: background-color 0.3s ease;">
+                Add New Word/Phrase
+            </button>
+        </a>
+    </div>
+
+    <!-- Search Bar -->
+    <form method="get">
+        <input type="text" name="q" placeholder="Search..." value="{{ query }}">
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- List of Words/Phrases -->
+    <ul>
+        {% for word in page_obj %}
+            <li>
+                <div class="word-text">
+                    <strong>{{ word.word_first_lang }}</strong> - {{ word.word_second_lang }}
+                </div>
+                {% if word.sentence_first_lang %}
+                    <span class="example-text">
+                        <em>Example: {{ word.sentence_first_lang }}</em>
+                    </span>
+                {% endif %}
+                <a href="{% url 'edit_word' word.pk %}" class="edit-link">Edit</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Pagination  -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1{% if query %}&q={{ query }}{% endif %}">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</body>
+</html>
