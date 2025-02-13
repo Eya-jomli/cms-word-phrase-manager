@@ -47,3 +47,7 @@ A simple Content Management System (CMS) for managing words and phrases in a loc
    ```bash
    git clone https://github.com/your-username/cms-word-phrase-manager.git
    cd cms-word-phrase-manager
+
+### Demo
+   [![Watch the video](https://img.youtube.com/vi/dQw4w9WgXcQ/0.jpg)](https://github.com/user-attachments/assets/badfd779-21ac-4834-978c-ba2d5691cf75)
+
